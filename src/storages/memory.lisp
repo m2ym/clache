@@ -18,9 +18,10 @@
         (values nil nil))))
 
 (defmethod store-cache (key value expire (storage memory-storage))
+  (when expire
+    (setf expire (+ (get-universal-time) expire)))
   (setf (gethash key (hash-table-of storage))
-        (cons (+ (get-universal-time) expire)
-              value))
+        (cons expire value))
   value)
 
 (defmethod delete-cache (key (storage memory-storage))

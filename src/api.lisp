@@ -2,7 +2,7 @@
 (annot:enable-annot-syntax)
 
 @export
-(defparameter *default-storage* nil)
+(defparameter *default-storage* (make-instance 'memory-storage))
 
 @export
 (defun getcache (key &optional (storage *default-storage*))
@@ -57,10 +57,7 @@
                                       (symbolp arg)
                                       (not (keywordp arg)))
                            collect (pop args)))
-               (fqn (format nil "~A:~A"
-                            (package-name (symbol-package name))
-                            (symbol-name name)))
-               (key `(list ,fqn ,@vars))
+               (key `(list ,name ,@vars))
                (expire (getf args :expire))
                (storage (getf args :storage '*default-storage*)))
           `(with-cache (,key :expire ,expire :storage ,storage)

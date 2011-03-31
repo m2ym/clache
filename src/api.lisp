@@ -45,14 +45,23 @@
                ,value))))))
 
 @export
-(annot:defannotation cache ((key &key expire (storage '*default-storage*))
-                            function-definition-form)
+(annot:defannotation cache (args function-definition-form)
     (:arity 2)
-  (annot.util:progn-form-replace-last
-   (lambda (function-definition-form)
-     (annot.util:replace-function-body
-      (lambda (body)
-        `(with-cache (,key :expire ,expire :storage ,storage)
-           ,@body))
-      function-definition-form))
-   function-definition-form))
+  (let* ((vars (loop for arg = (car args)
+                     while (and (symbolp arg)
+                                (not (keywordp arg)))
+                     collect (pop args)))
+         (key (case (length vars)
+                (0 (error "At least one variable must be given"))
+                (1 (car vars))
+                (t `(list ,@vars))))
+         (expire (getf args :expire))
+         (storage (getf args :storage '*default-storage*)))
+    (annot.util:progn-form-replace-last
+     (lambda (function-definition-form)
+       (annot.util:replace-function-body
+        (lambda (body)
+          `(with-cache (,key :expire ,expire :storage ,storage)
+             ,@body))
+        function-definition-form))
+     function-definition-form)))

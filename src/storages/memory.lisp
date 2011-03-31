@@ -19,7 +19,8 @@
 
 (defmethod store-cache (key value expire (storage memory-storage))
   (setf (gethash key (hash-table-of storage))
-        (cons expire value))
+        (cons (+ (get-universal-time) expire)
+              value))
   value)
 
 (defmethod delete-cache (key (storage memory-storage))

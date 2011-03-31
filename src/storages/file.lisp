@@ -23,7 +23,8 @@
         (values nil nil))))
 
 (defmethod store-cache (key value expire (storage file-storage))
-  (cl-store:store (cons expire value)
+  (cl-store:store (cons (+ (get-universal-time) expire)
+                        value)
                   (cache-path key storage)))
 
 (defmethod delete-cache (key (storage file-storage))

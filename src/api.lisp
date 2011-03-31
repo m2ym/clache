@@ -57,7 +57,7 @@
                                       (symbolp arg)
                                       (not (keywordp arg)))
                            collect (pop args)))
-               (key `(list ,name ,@vars))
+               (key `(list ',name ,@vars))
                (expire (getf args :expire))
                (storage (getf args :storage '*default-storage*)))
           `(with-cache (,key :expire ,expire :storage ,storage)

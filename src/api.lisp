@@ -1,5 +1,5 @@
 (in-package :cl-cache)
-(annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 @export
 (defparameter *default-storage* (make-instance 'memory-storage))
@@ -32,7 +32,7 @@
   (clear-cache storage))
 
 @export
-(defmacro with-cache ((key &key expire (storage '*default-storage*))
+(defmacro with-cache ((key &optional expire (storage '*default-storage*))
                       &body body)
   (alexandria:once-only (key expire storage)
     (alexandria:with-gensyms (value exists-p)
@@ -45,19 +45,15 @@
                ,value))))))
 
 @export
-(annot:defannotation cache (args function-definition-form)
-    (:arity 2)
-  (annot.util:replace-function-body
+@annotation (:arity 2)
+(defmacro cache ((keyargs &optional expire (storage '*default-storage*))
+                 function-definition-form)
+  (replace-function-body
    (lambda (name lambda-list body)
      @ignore lambda-list
-     (let* ((vars (loop for arg = (car args)
-                        while (and arg
-                                   (symbolp arg)
-                                   (not (keywordp arg)))
-                        collect (pop args)))
-            (key `(list ',name ,@vars))
-            (expire (getf args :expire))
-            (storage (getf args :storage '*default-storage*)))
-       `(with-cache (,key :expire ,expire :storage ,storage)
+     (let ((key `(list ',name ,@(if (listp keyargs)
+                                     keyargs
+                                     (list keyargs)))))
+       `(with-cache (,key ,expire ,storage)
           ,@body)))
    function-definition-form))

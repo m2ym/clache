@@ -13,7 +13,9 @@
                :ironclad
                :cl-fad
                :cl-store
-               :cl-annot)
+               :cl-annot
+               :cl-syntax
+               :cl-syntax-annot)
   :components ((:module "src"
                 :serial t
                 :components ((:file "package")

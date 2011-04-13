@@ -1,6 +1,9 @@
 (defpackage cl-cache
   (:nicknames :cache)
   (:use :cl)
+  (:import-from :alexandria
+                :once-only
+                :with-gensyms)
   (:import-from :annot
                 :annotation)
   (:import-from :annot.util

@@ -1,5 +1,14 @@
 (in-package :cl-cache)
-(annot:enable-annot-syntax)
+(use-syntax annot-syntax)
+
+#|
+
+File Storage
+------------
+
+TODO
+
+|#
 
 @export
 (defclass memory-storage (storage)

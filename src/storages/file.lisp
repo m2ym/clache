@@ -1,5 +1,14 @@
 (in-package :cl-cache)
-(annot:enable-annot-syntax)
+(use-syntax annot-syntax)
+
+#|
+
+File Storage
+------------
+
+TODO
+
+|#
 
 @export
 (defclass file-storage (storage)
@@ -7,7 +16,7 @@
       (directory :reader directory-of)))
 
 (defun cache-path (key storage)
-  (merge-pathnames (md5-hex-string key)
+  (merge-pathnames (md5-hex-string (cache-key-to-string key))
                    (directory-of storage)))
 
 (defmethod load-cache (key (storage file-storage))

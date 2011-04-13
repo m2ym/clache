@@ -10,7 +10,7 @@
 (defun object-to-string (object)
   (etypecase object
     (symbol (symbol-fqn object))
-    (t (prin1-to-string object))))
+    (t (princ-to-string object))))
 
 (defun md5-hex-string (object)
   (let* ((key-string (object-to-string object))

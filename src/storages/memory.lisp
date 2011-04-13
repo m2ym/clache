@@ -12,7 +12,7 @@
         (let ((expire (car cell))
               (value (cdr cell)))
           (if (and (not (never-expire-p expire))
-                   (< expire (get-universal-time)))
+                   (<= expire (get-universal-time)))
               (values nil nil)
               (values value t)))
         (values nil nil))))

@@ -12,4 +12,3 @@
                 :use-syntax)
   (:import-from :syntax-annot
                 :annot-syntax))
-

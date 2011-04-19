@@ -6,9 +6,6 @@
 API
 ---
 
-Glossary
---------
-
 ### Caches
 
 A cache is a triple of a key, a value, and an expiration time.
@@ -117,20 +114,25 @@ Example:
 (defmacro cache ((keyargs &optional expire (storage '*default-storage*))
                  function-definition-form)
   "Annotation for caching functions with their arguments. This should
-be used with CL-ANNOT. KEYARGS is a parameter or a list of parameters
-for making a cache key. See also WITH-CACHE.
+be used with CL-ANNOT. KEYARGS is a form or a list of form for making
+a cache key.  To make cache keys distinct as to the function, you may
+add a keyword or a symbol into KEYARGS. See also WITH-CACHE.
 
 Example:
 
-    @cache ((x y z))
+    @cache ((:f x y z))
     (defun f (x y z)
-      ...)"
+      ...)
+    
+    ;; Remove a cache of F
+    (remcache '(:f 1 2 3))"
   (replace-function-body
    (lambda (name lambda-list body)
+     @ignore name
      @ignore lambda-list
-     (let ((key `(list ',name ,@(if (listp keyargs)
-                                     keyargs
-                                     (list keyargs)))))
+     (let ((key (if (listp keyargs)
+                    `(list ,@keyargs)
+                    keyargs)))
        `(with-cache (,key ,expire ,storage)
           ,@body)))
    function-definition-form))

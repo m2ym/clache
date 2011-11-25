@@ -1,26 +1,26 @@
-(in-package :cl-cache)
-(use-syntax annot-syntax)
+(in-package :clache)
+(use-syntax :annot)
 
 #|
 
-File Storage
-------------
+File Store
+----------
 
 TODO
 
 |#
 
 @export
-(defclass file-storage (storage)
+(defclass file-store (store)
      (@annot.slot:required
       (directory :reader directory-of)))
 
-(defun cache-path (key storage)
+(defun cache-path (key store)
   (merge-pathnames (md5-hex-string (cache-key-to-string key))
-                   (directory-of storage)))
+                   (directory-of store)))
 
-(defmethod load-cache (key (storage file-storage))
-  (let ((path (cache-path key storage)))
+(defmethod load-cache (key (store file-store))
+  (let ((path (cache-path key store)))
     (if (probe-file path)
         (let* ((cell (cl-store:restore path))
                (expire (car cell))
@@ -31,18 +31,18 @@ TODO
               (values value t)))
         (values nil nil))))
 
-(defmethod store-cache (key value expire (storage file-storage))
+(defmethod store-cache (key value expire (store file-store))
   (when expire
     (setf expire (+ (get-universal-time) expire)))
   (cl-store:store (cons expire value)
-                  (cache-path key storage))
+                  (cache-path key store))
   value)
 
-(defmethod delete-cache (key (storage file-storage))
-  (let ((path (cache-path key storage)))
+(defmethod delete-cache (key (store file-store))
+  (let ((path (cache-path key store)))
     (when (probe-file path)
       (delete-file path))))
 
-(defmethod clear-cache ((storage file-storage))
-  (dolist (file (fad:list-directory (directory-of storage)))
+(defmethod clear-cache ((store file-store))
+  (dolist (file (fad:list-directory (directory-of store)))
     (delete-file file)))

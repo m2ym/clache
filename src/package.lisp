@@ -1,14 +1,13 @@
-(defpackage cl-cache
-  (:nicknames :cache)
+(in-package :cl-user)
+
+(defpackage :clache
   (:use :cl)
   (:import-from :alexandria
-                :once-only
-                :with-gensyms)
+                #:once-only
+                #:with-gensyms)
   (:import-from :annot
-                :annotation)
+                #:annotation)
   (:import-from :annot.util
-                :replace-function-body)
+                #:replace-function-body)
   (:import-from :syntax
-                :use-syntax)
-  (:import-from :syntax-annot
-                :annot-syntax))
+                #:use-syntax))

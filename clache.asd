@@ -1,14 +1,15 @@
 (in-package :cl-user)
 
-(defpackage cl-cache-asd
+(defpackage clache-asd
   (:use :cl :asdf))
-(in-package :cl-cache-asd)
+(in-package :clache-asd)
 
-(defsystem cl-cache
-  :version "0.1"
+(defsystem :clache
+  :version "0.2"
   :author "Tomohiro Matsuyama"
   :license "LLGPL"
   :depends-on (:alexandria
+               :trivial-garbage
                :babel
                :ironclad
                :cl-fad
@@ -21,7 +22,7 @@
                 :components ((:file "package")
                              (:file "utils")
                              (:file "protocol")
-                             (:module "storages"
+                             (:module "stores"
                               :serial t
                               :components ((:file "memory")
                                            (:file "file")))

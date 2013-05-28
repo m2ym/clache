@@ -1,9 +1,9 @@
-(defpackage cl-cache-test-asd
+(defpackage clache-test-asd
   (:use :cl :asdf))
-(in-package :cl-cache-test-asd)
+(in-package :clache-test-asd)
 
-(defsystem cl-cache-test
-  :depends-on (:cl-cache
+(defsystem clache-test
+  :depends-on (:clache
                :cl-test-more)
   :components ((:module "tests"
                 :serial t

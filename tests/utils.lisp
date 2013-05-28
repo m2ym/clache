@@ -1,11 +1,11 @@
-(in-package :cl-cache-test)
+(in-package :clache-test)
 
 (is (symbol-fqn 'foo)
-    "CL-CACHE-TEST:FOO"
+    "CLACHE-TEST:FOO"
     "symbol-fqn")
 
 (is (object-to-string 'foo)
-    "CL-CACHE-TEST:FOO"
+    "CLACHE-TEST:FOO"
     "object-to-string for symbol")
 
 (is (object-to-string 123)

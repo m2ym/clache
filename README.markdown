@@ -1,12 +1,12 @@
-CL-CACHE
+CLACHE
 ========
 
-CL-CACHE is a general caching library for Common Lisp.
+CLACHE is a general caching library for Common Lisp.
 
 Overview
 --------
 
-CL-CACHE provides a general caching facility for Common Lisp. The API
+CLACHE provides a general caching facility for Common Lisp. The API
 is similar with standard hash-table interface. Let me show you an
 overview of API.
 

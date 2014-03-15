@@ -100,12 +100,12 @@ Example:
                ,value))))))
 
 @export
-(defmacro with-inline-cache ((key &key expire (test #'equal) weakness) &body body)
+(defmacro with-inline-cache ((key &key expire (test 'equal) weakness) &body body)
   "Same as WITH-CACHE, except that an inline memory store will be used
 as a cache store. TEST is a function to test hash table keys of the
 memory store. WEAKNESS specifies the hash table is weak-hash-table or
 not."
-  (let* ((hash-table-form `(trivial-garbage:make-weak-hash-table :test ,test :weakness ,weakness))
+  (let* ((hash-table-form `(trivial-garbage:make-weak-hash-table :test (quote ,test) :weakness ,weakness))
          (store-form `(make-instance 'memory-store :hash-table ,hash-table-form)))
     `(with-cache (,key :store (load-time-value ,store-form) :expire ,expire)
        ,@body)))

@@ -13,6 +13,7 @@ TODO
 @export
 (defclass memory-store (store)
   ((hash-table :initform (make-hash-table :test #'equal)
+               :initarg :hash-table
                :reader hash-table-of)))
 
 (defmethod load-cache (key (store memory-store))
@@ -26,7 +27,7 @@ TODO
               (values value t)))
         (values nil nil))))
 
-(defmethod store-cache (key value expire (store memory-store))
+(defmethod store-cache (key value (store memory-store) expire)
   (when expire
     (setf expire (+ (get-universal-time) expire)))
   (setf (gethash key (hash-table-of store))

@@ -1,7 +1,7 @@
-(defpackage cl-cache-test
+(defpackage clache-test
   (:use :cl
         :cl-test-more)
-  (:import-from :cl-cache
+  (:import-from :clache
                 :symbol-fqn
                 :object-to-string
                 :md5-hex-string
@@ -11,5 +11,5 @@
                 :clrcache
                 :with-cache
                 :cache
-                :memory-storage
-                :file-storage))
+                :memory-store
+                :file-store))

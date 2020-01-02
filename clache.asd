@@ -5,8 +5,9 @@
 (in-package :clache-asd)
 
 (defsystem :clache
-  :version "0.2"
+  :version (:read-from-file "version.lisp-expr")
   :author "Tomohiro Matsuyama"
+  :maintainer "Olexiy Zamkoviy"
   :license "LLGPL"
   :depends-on (:alexandria
                :trivial-garbage

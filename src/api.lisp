@@ -46,7 +46,7 @@ values of the cache value and a boolean whether the cache exists in
 STORE. The cache value will be NIL if such the cache doesn't
 exist. For example, (getcache \"not-existed-cache\") will return NIL,
 NIL."
-  @type (store store)
+  ;@type (store store)
   (load-cache key store))
 
 @export
@@ -54,27 +54,27 @@ NIL."
   "Store a cache VALUE into STORE with KEY and EXPIRE. EXPIRE is an
 expiration time in seconds. If EXPIRE is NIL, the cache will never be
 expired. The return value is VALUE that has been stored."
-  @type (store store)
-  @type (expire expire)
+  ;@type (store store)
+  ;@type (expire expire)
   (store-cache key value store expire))
 
 @export
 (defun (setf getcache) (value key store &key expire)
-  @type (store store)
-  @type (expire expire)
-  (store-cache key value expire store))
+  ;@type (store store)
+  ;@type (expire expire)
+  (store-cache key value store expire))
 
 @export
 (defun remcache (key store)
   "Remove a cache from STORE indicated by KEY. If the cache has been
 successfully removed, this function returns T, otherwise returns NIL."
-  @type (store store)
+  ;@type (store store)
   (delete-cache key store))
 
 @export
 (defun clrcache (store)
   "Remove all caches from STORE. The return value is undefined."
-  @type (store store)
+  ;@type (store store)
   (clear-cache store))
 
 @export
@@ -96,16 +96,16 @@ Example:
          (if ,exists-p
              ,value
              (let ((,value (progn ,@body)))
-               (setcache ,key ,store ,value :expire ,expire)
+               (setcache ,key ,value ,store :expire ,expire)
                ,value))))))
 
 @export
-(defmacro with-inline-cache ((key &key expire (test #'equal) weakness) &body body)
+(defmacro with-inline-cache ((key &key expire (test 'equal) weakness) &body body)
   "Same as WITH-CACHE, except that an inline memory store will be used
 as a cache store. TEST is a function to test hash table keys of the
 memory store. WEAKNESS specifies the hash table is weak-hash-table or
 not."
-  (let* ((hash-table-form `(trivial-garbage:make-weak-hash-table :test ,test :weakness ,weakness))
+  (let* ((hash-table-form `(trivial-garbage:make-weak-hash-table :test (quote ,test) :weakness ,weakness))
          (store-form `(make-instance 'memory-store :hash-table ,hash-table-form)))
     `(with-cache (,key :store (load-time-value ,store-form) :expire ,expire)
        ,@body)))

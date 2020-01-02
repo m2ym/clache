@@ -1,12 +1,12 @@
-CL-CACHE
+CLACHE
 ========
 
-CL-CACHE is a general caching library for Common Lisp.
+CLACHE is a general caching library for Common Lisp.
 
 Overview
 --------
 
-CL-CACHE provides a general caching facility for Common Lisp. The API
+CLACHE provides a general caching facility for Common Lisp. The API
 is similar with standard hash-table interface. Let me show you an
 overview of API.
 
@@ -17,24 +17,29 @@ overview of API.
 
 As you can see, it is easy to use. Here is an example:
 
+    ;; Create a store
+    (defparamater *store* (progn
+                             (ensure-directories-exist #p"cache/")
+                             (make-instance 'file-store :directory #p"cache/")))
+
     ;; Store cache
-    (setcache 1 "foo")
+    (setcache 1 "foo" *store*)
     ;;=> 1
     
     ;; Get cache
-    (getcache 1)
+    (getcache 1 *store*)
     ;;=> 1, T
     
     ;; Get non-exited cache
-    (getcache 42)
+    (getcache 42 *store*)
     ;;=> NIL, NIL
     
     ;; Remove cache
-    (remcache 1)
+    (remcache 1 *store*)
     ;;=> T
     
     ;; Clear all cache
-    (clrcache)
+    (clrcache *store*)
 
 API
 ---
@@ -74,7 +79,7 @@ storages via API.
 
 ### Function: `getcache`
 
-    getcache key &optional storage
+    getcache key storage
 
 Retrieve a cache value from `storage` indicated by `key` and return
 values of the cache value and a boolean whether the cache exists in
@@ -84,7 +89,7 @@ exist. For example, `(getcache "not-existed-cache")` will return `nil`,
 
 ### Function: `setcache`
 
-    setcache key value &optional expire storage
+    setcache key value storage &optional expire
 
 Store a cache `value` into `storage` with `key` and `expire`. `expire`
 is an expiration time in seconds. If `expire` is `nil`, the cache will
@@ -92,13 +97,13 @@ never be expired. The return value is `value` that has been stored.
 
 ### Function: `(setf getcache)`
 
-    (setf getcache) value key &optional expire storage
+    (setf getcache) value key storage &optional expire 
 
 Same as `setcache`.
 
 ### Function: `remcache`
 
-    remcache key &optional storage
+    remcache key storage
 
 Remove a cache from `storage` indicated by `key`. If the cache has
 been successfully removed, this function returns `t`, otherwise
@@ -106,7 +111,7 @@ returns `nil`.
 
 ### Function: `clrcache`
 
-    clrcache &optional storage
+    clrcache storage
 
 Remove all caches from `storage`. The return value is undefined.
 
